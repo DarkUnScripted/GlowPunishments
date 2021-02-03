@@ -1,0 +1,8 @@
+punishments:
+  cheating:
+    command: "ban -s {target} {duration} {reason}"
+    duration:
+      - "1d"
+      - "1w"
+      - "1mo"
+    permission: "litebans.tempban"

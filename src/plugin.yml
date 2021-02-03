@@ -1,0 +1,10 @@
+name: GlowPunishments
+version: 1.0.0
+main: net.darkunscripted.GlowPunishments.Main
+author: darkunscripted
+
+commands:
+  punish:
+    description: punishment command
+  history:
+    description: shows the punishment history of a player
