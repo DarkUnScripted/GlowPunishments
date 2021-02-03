@@ -48,18 +48,20 @@ public class PunishmentManager {
     }
 
     public static void loadPlayerPunishments(){
-        ConfigurationSection playerSection = plugin.getManager().punishmentscfg.getConfigurationSection("players");
-        for(String playerUUID : playerSection.getKeys(false)){
-            ArrayList<Punishment> punishments = new ArrayList<Punishment>();
-            List<String> punishmentNames = plugin.getManager().punishmentscfg.getStringList("players." + playerUUID + ".punishments");
-            for(String punishment : punishmentNames){
-                for(Punishment punishmentObject : PunishmentData.punishments){
-                    if(punishmentObject.getName().equalsIgnoreCase(punishment)){
-                        punishments.add(punishmentObject);
+        if(plugin.getManager().punishmentscfg.contains("players")) {
+            ConfigurationSection playerSection = plugin.getManager().punishmentscfg.getConfigurationSection("players");
+            for (String playerUUID : playerSection.getKeys(false)) {
+                ArrayList<Punishment> punishments = new ArrayList<Punishment>();
+                List<String> punishmentNames = plugin.getManager().punishmentscfg.getStringList("players." + playerUUID + ".punishments");
+                for (String punishment : punishmentNames) {
+                    for (Punishment punishmentObject : PunishmentData.punishments) {
+                        if (punishmentObject.getName().equalsIgnoreCase(punishment)) {
+                            punishments.add(punishmentObject);
+                        }
                     }
                 }
+                PunishmentData.playerPunishments.put(UUID.fromString(playerUUID), punishments);
             }
-            PunishmentData.playerPunishments.put(UUID.fromString(playerUUID), punishments);
         }
     }
 
