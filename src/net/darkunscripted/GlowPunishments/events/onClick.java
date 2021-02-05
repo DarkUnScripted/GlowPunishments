@@ -5,6 +5,7 @@ import net.darkunscripted.GlowPunishments.data.PunishmentData;
 import net.darkunscripted.GlowPunishments.domain.Punishment;
 import net.darkunscripted.GlowPunishments.utils.Utils;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -34,14 +35,12 @@ public class onClick implements Listener {
                                 String command = punishment.getCommand();
                                 ItemStack playerItem = e.getClickedInventory().getItem(e.getClickedInventory().getSize() - 8);
                                 SkullMeta playerMeta = (SkullMeta) playerItem.getItemMeta();
-                                String name = playerMeta.getOwningPlayer().getName();
+                                OfflinePlayer player = playerMeta.getOwningPlayer();
+                                String name = player.getName();
                                 command = command.replace("{target}", name);
                                 command = command.replace("{reason}", punishment.getName());
-                                if (PunishmentData.playerPunishments.containsKey(playerMeta.getOwningPlayer().getUniqueId())) {
-                                    command = command.replace("{duration}", punishment.getDuration().get(0));
-                                    PunishmentData.playerPunishments.get(playerMeta.getOwningPlayer().getUniqueId()).add(punishment);
-                                } else {
-                                    int punishmentAmount = PunishmentData.playerPunishments.get(playerMeta.getOwningPlayer().getUniqueId()).size();
+                                if (PunishmentData.playerPunishments.containsKey(player.getUniqueId())) {
+                                    int punishmentAmount = PunishmentData.playerPunishments.get(player.getUniqueId()).size();
                                     if (punishmentAmount >= punishment.getDuration().size()) {
                                         command = command.replace("{duration}", punishment.getDuration().get(punishment.getDuration().size() - 1));
                                     } else {
@@ -49,6 +48,11 @@ public class onClick implements Listener {
                                     }
                                     PunishmentData.playerPunishments.put(playerMeta.getOwningPlayer().getUniqueId(), new ArrayList<Punishment>());
                                     PunishmentData.playerPunishments.get(playerMeta.getOwningPlayer().getUniqueId()).add(punishment);
+                                } else {
+                                    command = command.replace("{duration}", punishment.getDuration().get(0));
+                                    ArrayList<Punishment> punishments = new ArrayList<Punishment>();
+                                    punishments.add(punishment);
+                                    PunishmentData.playerPunishments.put(playerMeta.getOwningPlayer().getUniqueId(), punishments);
                                 }
                                 plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command);
                             }else{

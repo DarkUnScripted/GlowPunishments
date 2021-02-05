@@ -2,6 +2,7 @@ name: GlowPunishments
 version: 1.0.0
 main: net.darkunscripted.GlowPunishments.Main
 author: darkunscripted
+api-version: 1.16
 
 commands:
   punish:
